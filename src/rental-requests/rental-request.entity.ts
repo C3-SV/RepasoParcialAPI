@@ -1,19 +1,22 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
-export class User {
+export class RentalRequest {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    email: string;
+    machineId: number;
 
     @Column()
-    name: string;
+    userId: number;
 
     @Column()
-    role: string;
+    startDate: Date;
 
-    @OneToMany(() => Task, (task) => task.user)
-    tareas: Task[];
+    @Column()
+    endDate: Date;
+
+    @Column()
+    status: string;
 }
