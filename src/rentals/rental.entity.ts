@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, ManyToOne } from 'typeorm';
 import { User } from '../users/user.entity';
 import { Machine } from 'src/machines/machine.entity';
 
@@ -7,14 +7,11 @@ export class Rental {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    machineId: number;
+    @ManyToOne(() => User, (user) => user.rentals)
+    user: User;
 
-    @OneToOne(() => User, (user) => user.rentals)
-    userId: User;
-
-    @OneToOne(() => Machine, (machine) => machine.rentals)
-    machineId: Machine;
+    @ManyToOne(() => Machine, (machine) => machine.rentals)
+    machine: Machine;
 
     @Column()
     startDate: Date;
@@ -24,6 +21,5 @@ export class Rental {
 
     @Column()
     status: string;
-
 
 }
