@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
-export class RentalRequest {
+export class Rental {
     @PrimaryGeneratedColumn()
     id: number;
 
