@@ -1,5 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
+export enum MachineStatus {
+  DISPONIBLE = 'disponible',
+  RENTADO = 'rentado',
+  EN_TALLER = 'en taller',
+}
+
 @Entity()
 export class Machine {
     @PrimaryGeneratedColumn()
@@ -11,9 +17,13 @@ export class Machine {
     @Column()
     description: string;
 
-    @Column()
-    status: string;
+    @Column({
+    type: 'enum',
+    enum: MachineStatus,
+    default: MachineStatus.DISPONIBLE,
+   })
+   available: MachineStatus;
 
     @Column()
-    createdBy: User;
+    createdBy: string;
 }
