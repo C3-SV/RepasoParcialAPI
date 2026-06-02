@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-
+import { Rental } from '../rentals/rental.entity';
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -14,6 +14,6 @@ export class User {
     @Column()
     role: string;
 
-    @OneToMany(() => Task, (task) => task.user)
-    tareas: Task[];
+    @OneToMany(() => Rental, (rental) => rental.user)
+    rentals: Rental[];
 }
