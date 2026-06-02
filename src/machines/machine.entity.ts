@@ -12,7 +12,7 @@ export class Machine {
     description: string;
 
     @Column()
-    available: boolean;
+    status: string;
 
     @Column()
     createdBy: User;
