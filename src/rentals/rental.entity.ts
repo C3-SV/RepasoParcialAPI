@@ -1,15 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, ManyToOne } from 'typeorm';
+import { User } from '../users/user.entity';
+import { Machine } from 'src/machines/machine.entity';
 
 @Entity()
 export class Rental {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    machineId: number;
+    @ManyToOne(() => User, (user) => user.rentals)
+    user: User;
 
-    @Column()
-    userId: number;
+    @ManyToOne(() => Machine, (machine) => machine.rentals)
+    machine: Machine;
 
     @Column()
     startDate: Date;
@@ -19,4 +21,5 @@ export class Rental {
 
     @Column()
     status: string;
+
 }
