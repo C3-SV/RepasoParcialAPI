@@ -14,7 +14,7 @@ export class UsersController {
     @Post()
     @ApiOperation({ summary: 'Crear un nuevo usuario' })
     @ApiResponse({ status: 201, description: 'Usuario creado correctamente.' })
-    create(@Param('name') name: string, @Param('email') email: string): Promise<User> {
-        return this.usersService.createUser(name, email);
+    create(@Param('name') name: string, @Param('email') email: string, @Param('role') role: string): Promise<User> {
+        return this.usersService.createUser(name, email, role);
     }
 }
