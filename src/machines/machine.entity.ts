@@ -2,6 +2,12 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'ty
 import { Rental } from '../rentals/rental.entity';
 import { User } from '../users/user.entity';
 
+export enum MachineStatus {
+  DISPONIBLE = 'disponible',
+  RENTADO = 'rentado',
+  EN_TALLER = 'en taller',
+}
+
 @Entity()
 export class Machine {
     @PrimaryGeneratedColumn()
@@ -13,12 +19,18 @@ export class Machine {
     @Column()
     description: string;
 
-    @Column()
-    status: string;
+    @Column({
+    type: 'enum',
+    enum: MachineStatus,
+    default: MachineStatus.DISPONIBLE,
+   })
+   available: MachineStatus;
 
     @ManyToOne(() => User)
     createdBy: User;
 
     @OneToMany(() => Rental, (rental) => rental.machine)
     rentals: Rental[];
+    @Column()
+    createdBy: string;
 }

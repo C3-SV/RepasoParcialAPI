@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Rental } from './rental.entity';
@@ -10,10 +10,9 @@ export class RentalsService {
         private rentalsRepository: Repository<Rental>,
     ) { }
 
-    async createRentalRequest(machineId: number, startDate: Date, endDate: Date): Promise<Rental> {
-        // userId debe venir de auth
+    async createRentalRequest(userId: number, machineId: number, startDate: Date, endDate: Date): Promise<Rental> {
         const nuevo = this.rentalsRepository.create({
-            user: { id: 1 },
+            user: { id: userId },
             machine: { id: machineId },
             startDate,
             endDate,

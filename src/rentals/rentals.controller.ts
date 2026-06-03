@@ -1,9 +1,16 @@
-import { Controller, Post, Get, Param, Body, Put, Delete, } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, } from '@nestjs/swagger';
+import { Controller, Post, Get, Body, Req, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { RentalsService } from './rentals.service';
 import { Rental } from './rental.entity';
-import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
+type RequestWithUser = {
+    user?: {
+        id?: number | string;
+        sub?: number | string;
+        userId?: number | string;
+    };
+};
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('rentals')
@@ -15,17 +22,25 @@ export class RentalsController {
     @ApiOperation({ summary: 'Crear una nueva solicitud de alquiler' })
     @ApiResponse({ status: 201, description: 'Solicitud de alquiler creada correctamente.' })
     createRentalRequest(
-        @Param('machineId') machineId: number,
-        @Param('startDate') startDate: Date,
-        @Param('endDate') endDate: Date
+        @Req() req: RequestWithUser,
+        @Body() body: { machineId: number; startDate: string; endDate: string }
     ): Promise<Rental> {
-        return this.rentalsService.createRentalRequest(machineId, startDate, endDate);
+        const userId = Number(req.user?.id ?? req.user?.sub ?? req.user?.userId);
+
+        return this.rentalsService.createRentalRequest(
+            userId,
+            body.machineId,
+            new Date(body.startDate),
+            new Date(body.endDate),
+        );
     }
 
-    @Get('user/:userId')
+    @Get()
     @ApiOperation({ summary: 'Obtener alquileres por usuario' })
     @ApiResponse({ status: 200, description: 'Alquileres obtenidos correctamente.' })
-    getRentalsByUser(@Param('userId') userId: number): Promise<Rental[]> {
+    getRentalsByUser(@Req() req: RequestWithUser): Promise<Rental[]> {
+        const userId = Number(req.user?.id ?? req.user?.sub ?? req.user?.userId);
+
         return this.rentalsService.getRentalsByUser(userId);
     }
 }
