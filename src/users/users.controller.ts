@@ -1,5 +1,5 @@
-import { Controller, Post, Get, Param, Body, Put, Delete, } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, } from '@nestjs/swagger';
+import { Controller, Post, Body } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { UseGuards } from '@nestjs/common';
@@ -14,7 +14,7 @@ export class UsersController {
     @Post()
     @ApiOperation({ summary: 'Crear un nuevo usuario' })
     @ApiResponse({ status: 201, description: 'Usuario creado correctamente.' })
-    create(@Param('name') name: string, @Param('email') email: string, @Param('role') role: string): Promise<User> {
-        return this.usersService.createUser(name, email, role);
+    create(@Body() body: { name: string; email: string; password: string; role: string }): Promise<User> {
+        return this.usersService.createUser(body.name, body.email, body.password, body.role);
     }
 }

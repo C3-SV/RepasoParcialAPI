@@ -10,11 +10,15 @@ export class UsersService {
         private usersRepository: Repository<User>,
     ) { }
 
-    async createUser(name: string, email: string, role: string): Promise<User> {
+    async createUser(name: string, email: string, password: string, role: string): Promise<User> {
         if(role !== 'admin' && role !== 'user') {
             throw new NotFoundException('Role debe ser admin or user');
         }
-        const nuevo = this.usersRepository.create({ name, email, role });
+        const nuevo = this.usersRepository.create({ name, email, password, role });
         return this.usersRepository.save(nuevo);
+    }
+
+    async findByEmail(email: string): Promise<User | null> {
+        return this.usersRepository.findOne({ where: { email } });
     }
 }

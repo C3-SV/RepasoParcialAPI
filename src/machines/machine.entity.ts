@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Rental } from '../rentals/rental.entity';
+import { User } from '../users/user.entity';
 
 @Entity()
 export class Machine {
@@ -14,6 +16,9 @@ export class Machine {
     @Column()
     status: string;
 
-    @Column()
+    @ManyToOne(() => User)
     createdBy: User;
+
+    @OneToMany(() => Rental, (rental) => rental.machine)
+    rentals: Rental[];
 }
