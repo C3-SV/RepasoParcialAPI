@@ -31,6 +31,4 @@ export class Machine {
 
     @OneToMany(() => Rental, (rental) => rental.machine)
     rentals: Rental[];
-    @Column()
-    createdBy: string;
 }

@@ -8,8 +8,11 @@ export class User {
     @Column()
     email: string;
 
-    @Column()
-    password: string;
+    @Column({ type: 'varchar', nullable: true })
+    password: string | null;
+
+    @Column({ type: 'varchar', nullable: true, unique: true })
+    googleId: string | null;
 
     @Column()
     name: string;

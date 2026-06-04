@@ -2,6 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 
+type GoogleUserData = {
+    googleId: string;
+    email: string;
+    name: string;
+};
+
 @Injectable()
 export class AuthService {
 
@@ -34,6 +40,14 @@ export class AuthService {
 
         };
 
+    }
+
+    async validateGoogleUser(googleUser: GoogleUserData) {
+        return this.usersService.findOrCreateGoogleUser(googleUser);
+    }
+
+    googleLogin(user: any) {
+        return this.login(user);
     }
 
 }
